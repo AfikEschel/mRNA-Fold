@@ -7,7 +7,7 @@ This repository is a **learning and replication project** by team **apoqs** to i
 **This is NOT a full reproduction yet.** It is an honest, modular, and transparent learning effort that:
 - Starts from classical preprocessing and problem formulation
 - Implements small classical baselines for validation
-- Prepares the codebase for a later quantum layer
+- **Includes a working quantum layer** (CVaR-VQE on simulator)
 - Prioritizes reproducibility and honesty over ambition
 
 ## Scientific Context
@@ -61,9 +61,9 @@ The challenge explicitly recommends:
 - Pursue reproducibility and transparency
 - Build a compelling path toward possible quantum advantage (not claim it immediately)
 
-## What Is Implemented (v0)
+## What Is Implemented (v0.2.0)
 
-### Phase 1–9 (Current)
+### Phase 1–10 (Complete)
 - ✅ Repository structure and file layout
 - ✅ Robust data loading from semicolon-separated CSV (with fuzzy column-name matching)
 - ✅ Dataset validation (sequence length vs. Length column, NA checks)
@@ -71,27 +71,41 @@ The challenge explicitly recommends:
 - ✅ Base pairing rules (canonical + wobble pairs)
 - ✅ Quartet dataclass and generation from sequences
 - ✅ Quartet preprocessing (Q, QS, QC) with conflict and stacking detection
-- ✅ Comprehensive unit tests (pairing: 17 tests, quartets: 15 tests, qubo: 8 tests)
+- ✅ Comprehensive unit tests (pairing: 17 tests, quartets: 15 tests, qubo: 8 tests, quantum: 20 tests)
 - ✅ QUBO formulation with conflict penalties and stacking rewards
 - ✅ QUBO-to-Ising conversion
 - ✅ Brute-force solver for small instances
 - ✅ Structure conversion (quartets → base pairs → dot-bracket)
 - ✅ Metrics and evaluation (F1, sensitivity, PPV for structure comparison)
+- ✅ **CVaR-VQE quantum solver** with two-local ansatz (Y rotations + CZ gates, p=2 layers)
+- ✅ Quantum-classical benchmark script comparing CVaR-VQE vs brute-force baseline
+- ✅ Qiskit AerSimulator integration (statevector for ≤20 qubits, matrix_product_state for larger)
 
-### Phase 10 (Next)
-- Optional ViennaRNA integration for energy calculation
-- Scaffold quantum module (CVaR-VQE placeholder, marked as future work)
+### Future Phases (v1.0)
+- ViennaRNA integration for thermodynamic energy calculation
+- Multiple quantum solvers (QAOA, VQE variants)
+- Fujitsu simulator support
+- Hardware execution capabilities
 
 ## What Is NOT Implemented
 
-- ❌ Full quantum simulation or hardware execution
-- ❌ Complete thermodynamic energy scoring (will use simplified models in v0)
-- ❌ CVaR-VQE algorithm or any quantum solver (scaffolded only)
+- ❌ Full thermodynamic energy scoring (will use simplified models in v0.2.0)
 - ❌ Pseudoknot handling (future work)
 - ❌ Claims of quantum advantage
 - ❌ Production-level error handling or performance optimization
+- ❌ Hardware execution (simulator-only in v0.2.0)
+- ❌ Multiple quantum solvers (CVaR-VQE implemented, others planned for v1.0)
 
 ## Quick Start
+
+### Quick commands
+```bash
+source .venv/bin/activate
+pytest tests/ -v
+PYTHONPATH=src python scripts/inspect_dataset.py
+PYTHONPATH=src python scripts/demo_qubo_pipeline.py
+PYTHONPATH=src python scripts/benchmark_quantum_vs_classical.py
+```
 
 ### Prerequisites
 - Python 3.8+
@@ -151,7 +165,17 @@ source venv/bin/activate
 pytest tests/
 ```
 
-The tests should all pass (58 tests currently).
+The tests should all pass (78 tests currently: 17 pairing + 15 quartets + 8 QUBO + 4 metrics + 20 quantum + 14 total checks).
+
+### Run Quantum Benchmark
+
+Test the quantum solver against classical baseline:
+```bash
+source venv/bin/activate
+PYTHONPATH=src python scripts/benchmark_quantum_vs_classical.py
+```
+
+This will run CVaR-VQE on real mRNA sequences from the dataset and compare against brute-force solving.
 
 ### Directory Structure
 
@@ -176,13 +200,17 @@ mrnafold/
 │   ├── quartets.py                    # Quartet representation and generation
 │   ├── qubo.py                        # QUBO formulation and classical baseline
 │   ├── metrics.py                     # Structure comparison and evaluation
-│   └── quantum/
-│       └── __init__.py                # Quantum module placeholder
+│   └── quantum/                       # Quantum solvers module
+│       ├── __init__.py                # Quantum module exports
+│       ├── base_solver.py             # Abstract solver interface
+│       ├── cvar_vqe.py                # CVaR-VQE implementation
+│       └── ansatz.py                  # Two-local ansatz
 │
 ├── scripts/
 │   ├── inspect_dataset.py             # Inspect and validate dataset
 │   ├── demo_qubo_pipeline.py          # Demo QUBO pipeline for a sample sequence
-│   └── run_pipeline_on_dataset.py     # Run pipeline on dataset examples
+│   ├── run_pipeline_on_dataset.py     # Run pipeline on dataset examples
+│   └── benchmark_quantum_vs_classical.py  # Quantum vs classical benchmark
 │
 ├── notebooks/
 │   └── ... (exploratory notebooks, optional)
@@ -191,17 +219,19 @@ mrnafold/
     ├── test_pairing.py                # Unit tests for pairing rules
     ├── test_quartets.py               # Unit tests for quartet logic
     ├── test_qubo.py                    # Unit tests for QUBO and structure conversion
-    └── test_metrics.py                # Unit tests for evaluation metrics
+    ├── test_metrics.py                # Unit tests for evaluation metrics
+    └── test_quantum.py                # Unit tests for quantum solvers
 ```
 
 ## Limitations and Honesty Statements
 
-### Current Implementation (v0)
-- **No quantum execution**: All quantum components are scaffolded only.
+### Current Implementation (v0.2.0)
+- **Simulator-only quantum execution**: Quantum solver runs on Qiskit AerSimulator, not real hardware.
 - **Simplified energy scoring**: We do not yet integrate full ViennaRNA thermodynamic tables. Energy values are placeholders or simplified approximations.
-- **Tiny instances only**: Classical baseline is brute-force; suitable for ≤ 10 base pairs. Scaling to 60 nucleotides requires proper optimization.
+- **Medium instances only**: Classical baseline is brute-force; suitable for ≤ 20 quartets. Larger instances use quantum solver only.
 - **No pseudoknots**: Current formulation excludes pseudoknots (nested only).
 - **Proof-of-concept only**: This is NOT a competitor to MFold, ViennaRNA, or other established tools.
+- **No quantum advantage claims**: Implementation demonstrates feasibility, not superiority.
 
 ### Next Phases
 - Proper QUBO construction following the paper
@@ -212,17 +242,18 @@ mrnafold/
 
 ## Next Steps
 
-1. **Review Phase 1–2**: Verify data loading and dataset inspection work correctly.
-2. **Implement Phase 3**: Add base pair validity checks.
-3. **Implement Phase 4–5**: Build quartet dataclass and preprocessing.
-4. **Test thoroughly**: Unit tests for each phase before moving to the next.
-5. **Document assumptions**: Make simplifications explicit in code comments.
-6. **Then iteratively**:
-   - Add QUBO formulation
-   - Add classical baseline
-   - Add postprocessing
-   - Add metrics
-   - Finally scaffold quantum module
+1. **Review Phase 10**: Verify quantum solver works correctly on dataset sequences.
+2. **V1.0 Development**:
+   - Integrate ViennaRNA for accurate energy calculations
+   - Add multiple quantum solvers (QAOA, VQE variants)
+   - Implement Fujitsu simulator support
+   - Add hardware execution capabilities
+3. **Test thoroughly**: All tests pass, benchmark script runs successfully.
+4. **Document assumptions**: Make simplifications explicit in code comments.
+5. **Future work**:
+   - Pseudoknot handling
+   - Production-level optimizations
+   - Error mitigation strategies
 
 ## How to Contribute / Extend
 
@@ -251,4 +282,4 @@ TBD (check with team before publication)
 ---
 
 **Last Updated**: April 2026  
-**Status**: v0 (Phase 1–2 complete, Phases 3–10 in progress)
+**Status**: v0 (Phase 1–10 complete)

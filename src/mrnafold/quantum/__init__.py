@@ -1,14 +1,19 @@
 """
-Quantum module for mRNA folding replication.
+Quantum module for mRNA secondary structure prediction.
 
-This module scaffolds the quantum layer inspired by the IBM-Moderna paper.
-Currently contains placeholders for CVaR-VQE and ansatz structures.
-NOT a full implementation - marked as partial/future work.
+Phase 10: Full CVaR-VQE implementation
+
+This module provides:
+- BaseSolver: Abstract interface for pluggable solvers
+- TwoLocalAnsatz: Hardware-efficient ansatz (Y rotations + CZ gates, p=2 layers)
+- CVaRVQE: Conditional Value at Risk Variational Quantum Eigensolver
+
+Runs on Qiskit's statevector simulator for small instances.
 """
 
-# Placeholder imports - to be implemented later
-from .cvar_vqe import CVaRVQE  # Placeholder
-from .ansatz import TwoLocalAnsatz  # Placeholder
+from .base_solver import BaseSolver
+from .cvar_vqe import CVaRVQE
+from .ansatz import TwoLocalAnsatz
 
-__all__ = ["CVaRVQE", "TwoLocalAnsatz"]
-__version__ = "0.1.0"
+__all__ = ["BaseSolver", "CVaRVQE", "TwoLocalAnsatz"]
+__version__ = "0.2.0"  # Phase 10 complete
