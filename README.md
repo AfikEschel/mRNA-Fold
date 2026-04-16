@@ -63,7 +63,7 @@ The challenge explicitly recommends:
 
 ## What Is Implemented (v0)
 
-### Phase 1–9 (Current)
+### Phase 1–10 (Current)
 - ✅ Repository structure and file layout
 - ✅ Robust data loading from semicolon-separated CSV (with fuzzy column-name matching)
 - ✅ Dataset validation (sequence length vs. Length column, NA checks)
@@ -77,10 +77,7 @@ The challenge explicitly recommends:
 - ✅ Brute-force solver for small instances
 - ✅ Structure conversion (quartets → base pairs → dot-bracket)
 - ✅ Metrics and evaluation (F1, sensitivity, PPV for structure comparison)
-
-### Phase 10 (Next)
-- Optional ViennaRNA integration for energy calculation
-- Scaffold quantum module (CVaR-VQE placeholder, marked as future work)
+- ✅ Scaffold quantum module (CVaR-VQE and two-local ansatz placeholders, marked as future work)
 
 ## What Is NOT Implemented
 
@@ -210,19 +207,16 @@ mrnafold/
 - Error mitigation strategies for quantum layer
 - Comprehensive test coverage
 
-## Next Steps
+## Next Steps (v1 and Beyond)
 
-1. **Review Phase 1–2**: Verify data loading and dataset inspection work correctly.
-2. **Implement Phase 3**: Add base pair validity checks.
-3. **Implement Phase 4–5**: Build quartet dataclass and preprocessing.
-4. **Test thoroughly**: Unit tests for each phase before moving to the next.
-5. **Document assumptions**: Make simplifications explicit in code comments.
-6. **Then iteratively**:
-   - Add QUBO formulation
-   - Add classical baseline
-   - Add postprocessing
-   - Add metrics
-   - Finally scaffold quantum module
+Now that v0 is complete, future development could include:
+1. **ViennaRNA Integration**: Add optional thermodynamic energy calculation using ViennaRNA for accurate MFE validation.
+2. **Scalable Classical Solver**: Replace brute-force with CPLEX or other optimizers for larger instances.
+3. **Full Quantum Implementation**: Implement CVaR-VQE with NFT optimizer and two-local ansatz using Qiskit or similar.
+4. **Pseudoknot Support**: Extend formulation to handle pseudoknots.
+5. **Hardware Simulation**: Test on quantum simulators and eventually real hardware.
+6. **Benchmarking**: Compare against MFold, ViennaRNA on larger datasets.
+7. **Error Mitigation**: Add strategies for noisy quantum devices.
 
 ## How to Contribute / Extend
 
@@ -251,4 +245,4 @@ TBD (check with team before publication)
 ---
 
 **Last Updated**: April 2026  
-**Status**: v0 (Phase 1–2 complete, Phases 3–10 in progress)
+**Status**: v0 complete (Phase 1–10 done)
