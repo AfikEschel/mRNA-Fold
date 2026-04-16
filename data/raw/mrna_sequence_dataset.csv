@@ -1,0 +1,7 @@
+﻿Sequence;Length;Dot-braket min free energy conformation;Energy (kcal/mol)
+AUCUGCAUGGCCAAGAGGGUUA;22;.......(((((.....)))));-2.8
+UUGCCUCAUAAGCGUCUUACUGAGCCCAAG;30;(((.((((((((...)))).))))..))).;-3.8
+AAGCCUAUCAACGGCGUGCGCUGUGAUAUG;30;.....(((((.((((....)))))))))..;-8.4
+CCAUUUAUACCCCGGGCCGCCUACUGCACCCAGUGUAACAUG;42;.(((((((((...(((..((.....)).))).)))))).)));-8.5
+AUCUGGUCUAAUAAUCUGUAUCUGCGCCCAUUUCAGUUUAUCCAU;45;...(((....((((.(((...............))).))))))).;-3
+AUGGACUUGGAUCGAAAGCGGCUAUGUACUCUUGGACGGAUGCCGAAUUGGAACUCGUGGAAGACAAAGGCGGUAUCGACCUUUGGAAGCUAAGGCCGCGGUAUUGGAGCUGAACUUCGGCUUACG;126;.................((((((......((((..((((...((.....))...))))..))))((((((((....)).))))))........)))))).......(((((((...)))))))...;-32.70

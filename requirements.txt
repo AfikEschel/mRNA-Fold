@@ -1,0 +1,21 @@
+# Core dependencies
+numpy>=1.21.0
+pandas>=1.3.0
+
+# Optional: RNA structure tools
+# ViennaRNA is optional; code should work without it
+# To install: pip install ViennaRNA
+
+# Quantum computing (optional for later phases)
+# qiskit>=0.39.0
+# qiskit-aer>=0.11.0
+# qiskit-ibm-runtime>=0.8.0
+
+# Testing
+pytest>=6.0.0
+pytest-cov>=2.12.0
+
+# Development
+black>=21.0
+flake8>=3.9.0
+mypy>=0.910
